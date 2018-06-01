@@ -1,0 +1,5 @@
+extends:
+  - osedea/esnext
+
+rules:
+  no-await-in-loop: off

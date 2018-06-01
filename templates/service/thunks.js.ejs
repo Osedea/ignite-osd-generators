@@ -1,0 +1,18 @@
+// @flow
+
+import { fetch<%= props.name %>Try, fetch<%= props.name %>Success, fetch<%= props.name %>Fail } from './actions';
+import { fetch<%= props.name %> } from './requests';
+
+/**
+ * GET <%= props.name %>
+ */
+export const get<%= props.name %> = () => (dispatch) =>
+    dispatch(fetch<%= props.name %>Try());
+
+    fetch<%= props.name %>()
+        .then((data) => {
+            dispatch(fetch<%= props.name %>Success(data));
+        })
+        .catch((response) => {
+            dispatch(fetch<%= props.name %>Fail(response.message));
+        });

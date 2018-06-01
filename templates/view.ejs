@@ -1,0 +1,40 @@
+import React, { Component } from 'react';
+import { StyleSheet, Text } from 'react-native';
+import { connect } from 'react-redux';
+// import YourSelector from '<%= props.appName %>/services/YOUR_SERVICE/selectors.js'
+// import YourThunk from '<%= props.appName %>/services/YOUR_SERVICE/thunks.js'
+
+const styles = StyleSheet.create({
+    container: {
+    },
+});
+
+class <%= props.name %>View extends Component {
+    // constructor (props) {
+    //     super(props)
+    //     this.state = {};
+    // }
+
+    // state = {};
+
+    render () {
+        return (
+          <Content>
+              <Text><%= props.name %> Container</Text>
+          </Content>
+        )
+    }
+}
+
+const mapStateToProps = createStructuredSelector({
+    // selector: YourSelector(),
+});
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            // YourThunk,
+        },
+        dispatch
+    );
+
+export default connect(mapStateToProps, mapDispatchToProps)(<%= props.name %>View);

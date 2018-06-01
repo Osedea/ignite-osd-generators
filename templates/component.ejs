@@ -1,0 +1,47 @@
+// @flow
+import React, { Component } from 'react'
+import { StyleSheet, Text, View } from 'react-native';
+<% if (props.isConnected) { %>
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { createStructuredSelector } from 'reselect';
+<% } %>
+
+const styles = StyleSheet.create({
+    container: {},
+})
+
+type Props = {};
+// type State = {};
+
+<% if (props.isConnected) { %>
+class <%= props.name %> extends Component {
+<% } else { %>
+export default class <%= props.name %> extends Component<Props> {
+<% } %>
+  // // Defaults for props
+  // static defaultProps = {
+  // }
+
+  // state = {};
+
+  render () {
+    return (
+      <View style={styles.container}>
+        <Text><%= props.name %> Component</Text>
+      </View>
+    )
+  }
+}
+
+<% if (props.isConnected) { %>
+const mapStateToProps = createStructuredSelector({
+});
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {},
+        dispatch
+    );
+
+export default connect(mapStateToProps, mapDispatchToProps)(<%= props.name %>);
+<% } %>
