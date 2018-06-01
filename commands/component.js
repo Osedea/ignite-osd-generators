@@ -6,6 +6,8 @@ module.exports = async function (context) {
     const { pascalCase, isBlank } = strings;
     let isConnected = false;
 
+    const config = ignite.loadIgniteConfig();
+
     // validation
     if (isBlank(parameters.first)) {
         print.info(`${context.runtime.brand} generate component <name>\n`);
@@ -18,14 +20,15 @@ module.exports = async function (context) {
             name: 'isConnected',
             type: 'radio',
             message: 'Will this component be connected to redux?',
-            choices: [false, true],
+            choices: ['No', 'Yes'],
         });
-        isConnected = answer.isConnected;
+        isConnected = answer.isConnected === 'Yes';
     }
 
     // read some configuration
     const name = pascalCase(parameters.first);
-    const props = { 
+    const props = {
+        ...config,
         name,
         isConnected,
     };

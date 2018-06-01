@@ -14,31 +14,43 @@ module.exports = async function (context) {
     }
 
     const name = pascalCase(parameters.first);
-    const props = { name,
-        appName: config.appName };
+    const props = {
+        ...config,
+        name,
+    };
 
     const jobs = [
         {
-            template: `actions.js.ejs`,
+            template: `service/actions.js.ejs`,
             target: `app/services/${name}/actions.js`,
         },
         {
-            template: `reducer.js.ejs`,
+            template: `service/reducer.js.ejs`,
             target: `app/services/${name}/reducer.js`,
         },
         {
-            template: `requests.js.ejs`,
+            template: `service/requests.js.ejs`,
             target: `app/services/${name}/requests.js`,
         },
         {
-            template: `selectors.js.ejs`,
+            template: `service/selectors.js.ejs`,
             target: `app/services/${name}/selectors.js`,
         },
         {
-            template: `thunks.js.ejs`,
+            template: `service/thunks.js.ejs`,
             target: `app/services/${name}/thunks.js`,
         },
     ];
 
     await ignite.copyBatch(context, jobs, props);
+
+    ignite.patchInFile(`${process.cwd()}/app/reducers.js`, {
+        after: `import { combineReducers } from 'redux-immutable';`,
+        insert: `import ${name}Reducer from '${config.appName}/app/services/${name}/reducer';`,
+    });
+
+    ignite.patchInFile(`${process.cwd()}/app/reducers.js`, {
+        after: `export default combineReducers`,
+        insert: `    ${name}: ${name}Reducer,`,
+    });
 };

@@ -11,8 +11,8 @@ Available generators are:
 ## Example
 
 ```js
-ignite -g component MyNewComponent
-ignite -g service BurgersService
-ignite -g view CandyView
+ignite generate component ShepherdsPie
+ignite generate service Burgers
+ignite generate view Candy
 ```
 

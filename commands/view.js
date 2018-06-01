@@ -1,7 +1,5 @@
 // @cliDescription  Generates a redux smart component.
 
-const patterns = require('../lib/patterns');
-
 module.exports = async function (context) {
     // grab some features
     const { parameters, strings, print, ignite, filesystem } = context;
@@ -28,38 +26,47 @@ module.exports = async function (context) {
 
     await ignite.copyBatch(context, jobs, props);
 
-    // if using `react-navigation` go the extra step
-    // and insert the view into the nav router
-    if (config.navigation === 'react-navigation') {
-        const viewName = name;
-        const appNavFilePath = config.navigation === 'react-navigation'
-            ? `${process.cwd()}/app/routes/index.js`
-            : `${process.cwd()}/app/routes.js`;
-        const importToAdd = `import ${viewName} from '${
-            config.appName
-        }/app/views/${viewName}'`;
-        const routeToAdd = `    ${viewName}: { screen: ${viewName} },`;
+    const appNavFilePath = config.navigation === 'react-navigation'
+        ? `${process.cwd()}/app/routes/index.js`
+        : `${process.cwd()}/app/routes.js`;
+    const viewName = name;
+    const importToAdd = `import ${viewName} from '${
+        config.appName
+    }/app/views/${viewName}';`;
 
-        if (!filesystem.exists(appNavFilePath)) {
-            const msg = `No '${appNavFilePath}' file found.  Can't insert view.`;
-            print.error(msg);
-            process.exit(1);
-        }
+    if (!filesystem.exists(appNavFilePath)) {
+        const msg = `No '${appNavFilePath}' file found.  Can't insert view.`;
+        print.error(msg);
+        process.exit(1);
+    }
+
+    if (config.navigation === 'react-navigation') {
+        const routeToAdd = `    ${viewName}: { screen: ${viewName} },`;
 
         // insert view import
         ignite.patchInFile(appNavFilePath, {
-            after: patterns[patterns.constants.PATTERN_ROUTES_IMPORT],
+            after: `import Splash from './splash';`,
             insert: importToAdd,
         });
 
         // insert view route
         ignite.patchInFile(appNavFilePath, {
-            after: patterns[patterns.constants.PATTERN_ROUTES],
+            after: 'const routes = {',
             insert: routeToAdd,
         });
     } else {
-        print.info(
-            `View created, manually add it to your navigation. Here are the snippets:\n${importToAdd}\n${routeToAdd}`
-        );
+        const routeToAdd = `    Navigation.registerNewComponent('${config.appName}.${viewName}', () => provideRedux(${viewName}));`;
+
+        // insert view import
+        ignite.patchInFile(appNavFilePath, {
+            after: `import Splash from '${config.appName}/app/views/Splash';`,
+            insert: importToAdd,
+        });
+
+        // insert view route
+        ignite.patchInFile(appNavFilePath, {
+            after: 'export default function registerScreens',
+            insert: routeToAdd,
+        });
     }
 };

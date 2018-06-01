@@ -1,12 +1,10 @@
 // @flow
-
-import RequestHandler from '<%= props.appName %>/app/helpers/RequestHandler';
+import RequestHandler from '<%= props.appName %>/app/helpers/requestHandler';
 import type { <%= props.name %>Type } from '<%= props.appName %>/app/types';
 
 /**
  * Gets the <%= props.name %>
  */
-/* eslint-disable import/prefer-default-export */
 export function fetch<%= props.name %>(): { data: Array<<%= props.name %>Type> } {
     return RequestHandler.requestAPI(`/<%= props.name.toLowerCase() %>`);
 }

@@ -1,40 +1,48 @@
+// @flow
 import React, { Component } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-// import YourSelector from '<%= props.appName %>/services/YOUR_SERVICE/selectors.js'
-// import YourThunk from '<%= props.appName %>/services/YOUR_SERVICE/thunks.js'
+import { bindActionCreators } from 'redux';
+import { createStructuredSelector } from 'reselect';
+
+import Text from '<%= props.appName %>/app/components/base/Text';
+import ViewContainer from '<%= props.appName %>/app/containers/ViewContainer';
+// import YourSelector from '<%= props.appName %>/app/services/YourService/selectors';
+// import YourThunk from '<%= props.appName %>/app/services/YourService/thunks';
 
 const styles = StyleSheet.create({
     container: {
     },
 });
 
-class <%= props.name %>View extends Component {
+type Props = {};
+
+class <%= props.name %>View extends Component<Props> {
     // constructor (props) {
     //     super(props)
+    //
     //     this.state = {};
     // }
 
     // state = {};
 
-    render () {
+    render() {
         return (
-          <Content>
-              <Text><%= props.name %> Container</Text>
-          </Content>
-        )
+            <ViewContainer style={styles.container}>
+                <Text><%= props.name %></Text>
+            </ViewContainer>
+        );
     }
 }
 
 const mapStateToProps = createStructuredSelector({
-    // selector: YourSelector(),
+    // yourProp: YourSelector(),
 });
-const mapDispatchToProps = (dispatch) =>
-    bindActionCreators(
-        {
-            // YourThunk,
-        },
-        dispatch
-    );
+const mapDispatchToProps = (dispatch) => bindActionCreators(
+    {
+        // YourThunk,
+    },
+    dispatch
+);
 
 export default connect(mapStateToProps, mapDispatchToProps)(<%= props.name %>View);

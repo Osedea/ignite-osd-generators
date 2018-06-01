@@ -1,11 +1,8 @@
 // @flow
 
-export const <%= props.name.toUpperCase() %>_FETCH_TRY
-    = '<%= props.appName %>/<%= props.name %>/<%= props.name.toUpperCase() %>_FETCH_TRY';
-export const <%= props.name.toUpperCase() %>_FETCH_SUCCESS
-    = '<%= props.appName %>/<%= props.name %>/<%= props.name.toUpperCase() %>_FETCH_SUCCESS';
-export const <%= props.name.toUpperCase() %>_FETCH_FAIL
-    = '<%= props.appName %>/<%= props.name %>/<%= props.name.toUpperCase() %>_FETCH_FAIL';
+export const <%= props.name.toUpperCase() %>_FETCH_TRY = '<%= props.appName %>/<%= props.name %>/<%= props.name.toUpperCase() %>_FETCH_TRY';
+export const <%= props.name.toUpperCase() %>_FETCH_SUCCESS = '<%= props.appName %>/<%= props.name %>/<%= props.name.toUpperCase() %>_FETCH_SUCCESS';
+export const <%= props.name.toUpperCase() %>_FETCH_FAIL = '<%= props.appName %>/<%= props.name %>/<%= props.name.toUpperCase() %>_FETCH_FAIL';
 
 export const fetch<%= props.name %>Try = () => ({
     type: <%= props.name.toUpperCase() %>_FETCH_TRY,

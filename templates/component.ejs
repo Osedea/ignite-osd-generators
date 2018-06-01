@@ -1,47 +1,37 @@
 // @flow
-import React, { Component } from 'react'
-import { StyleSheet, Text, View } from 'react-native';
-<% if (props.isConnected) { %>
-import { connect } from 'react-redux';
+import React, { Component } from 'react';
+import { StyleSheet } from 'react-native';
+<% if (props.isConnected) { %>import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { createStructuredSelector } from 'reselect';
-<% } %>
+import { createStructuredSelector } from 'reselect';<% } %>
+
+import Text from '<%= props.appName %>/app/components/base/Text';
+import View from '<%= props.appName %>/app/components/base/View';
 
 const styles = StyleSheet.create({
     container: {},
-})
+});
 
 type Props = {};
-// type State = {};
 
-<% if (props.isConnected) { %>
-class <%= props.name %> extends Component {
-<% } else { %>
-export default class <%= props.name %> extends Component<Props> {
-<% } %>
-  // // Defaults for props
-  // static defaultProps = {
-  // }
+<% if (props.isConnected) { %>class <%= props.name %> extends Component<Props> {<% } else { %>export default class <%= props.name %> extends Component<Props> {<% } %>
+    // Defaults for props
+    static defaultProps = {};
 
-  // state = {};
-
-  render () {
-    return (
-      <View style={styles.container}>
-        <Text><%= props.name %> Component</Text>
-      </View>
-    )
-  }
+    render() {
+        return (
+            <View style={styles.container}>
+                <Text><%= props.name %> Component</Text>
+            </View>
+        );
+    }
 }
 
-<% if (props.isConnected) { %>
-const mapStateToProps = createStructuredSelector({
+<% if (props.isConnected) { %>const mapStateToProps = createStructuredSelector({
 });
-const mapDispatchToProps = (dispatch) =>
-    bindActionCreators(
-        {},
-        dispatch
-    );
+const mapDispatchToProps = (dispatch) => bindActionCreators(
+    {},
+    dispatch
+);
 
-export default connect(mapStateToProps, mapDispatchToProps)(<%= props.name %>);
-<% } %>
+export default connect(mapStateToProps, mapDispatchToProps)(<%= props.name %>);<% } %>
