@@ -4,9 +4,7 @@ module.exports = async function (context) {
     // grab some features
     const { parameters, ignite, strings, print, filesystem } = context;
     const { isBlank, pascalCase } = strings;
-    const config = ignite.loadIgniteConfig();
-    const igniteJson = await filesystem.read(`${process.cwd()}/ignite.json`);
-    const appName = JSON.parse(igniteJson).appName;
+    const { appName } = await filesystem.read(`${process.cwd()}/ignite.json`, 'json');
 
     // validation
     if (isBlank(parameters.first)) {
@@ -17,8 +15,8 @@ module.exports = async function (context) {
 
     const name = pascalCase(parameters.first);
     const props = {
-        ...config,
         name,
+        appName,
     };
 
     const jobs = [
