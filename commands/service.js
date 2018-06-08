@@ -2,9 +2,11 @@
 
 module.exports = async function (context) {
     // grab some features
-    const { parameters, ignite, strings, print } = context;
+    const { parameters, ignite, strings, print, filesystem } = context;
     const { isBlank, pascalCase } = strings;
     const config = ignite.loadIgniteConfig();
+    const igniteJson = await filesystem.read(`${process.cwd()}/ignite.json`);
+    const appName = JSON.parse(igniteJson).appName;
 
     // validation
     if (isBlank(parameters.first)) {
@@ -46,7 +48,7 @@ module.exports = async function (context) {
 
     ignite.patchInFile(`${process.cwd()}/app/reducers.js`, {
         after: `import { combineReducers } from 'redux-immutable';`,
-        insert: `import ${name}Reducer from '${config.appName}/app/services/${name}/reducer';`,
+        insert: `import ${name}Reducer from '${appName}/app/services/${name}/reducer';`,
     });
 
     ignite.patchInFile(`${process.cwd()}/app/reducers.js`, {

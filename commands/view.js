@@ -4,7 +4,12 @@ module.exports = async function (context) {
     // grab some features
     const { parameters, strings, print, ignite, filesystem } = context;
     const { pascalCase, isBlank } = strings;
-    const config = ignite.loadIgniteConfig();
+
+    let igniteJson = await filesystem.read(`${process.cwd()}/ignite.json`);
+    igniteJson = JSON.parse(igniteJson);
+
+    const appName = igniteJson.appName;
+    const navigation = igniteJson.navigation;
 
     // validation
     if (isBlank(parameters.first)) {
@@ -15,7 +20,7 @@ module.exports = async function (context) {
 
     const name = pascalCase(parameters.first);
     const props = { name,
-        appName: config.appName };
+        appName };
 
     const jobs = [
         {
@@ -26,12 +31,12 @@ module.exports = async function (context) {
 
     await ignite.copyBatch(context, jobs, props);
 
-    const appNavFilePath = config.navigation === 'react-navigation'
+    const appNavFilePath = navigation === 'react-navigation'
         ? `${process.cwd()}/app/routes/index.js`
         : `${process.cwd()}/app/routes.js`;
     const viewName = name;
     const importToAdd = `import ${viewName} from '${
-        config.appName
+        appName
     }/app/views/${viewName}';`;
 
     if (!filesystem.exists(appNavFilePath)) {
@@ -40,14 +45,24 @@ module.exports = async function (context) {
         process.exit(1);
     }
 
-    if (config.navigation === 'react-navigation') {
+    if (navigation === 'react-navigation') {
         const routeToAdd = `    ${viewName}: { screen: ${viewName} },`;
 
-        // insert view import
-        ignite.patchInFile(appNavFilePath, {
-            after: `import Splash from './splash';`,
-            insert: importToAdd,
-        });
+        const file = await filesystem.read(appNavFilePath);
+        const splashImport = `import Splash from './splash';`;
+
+        if (file.includes(splashImport)) {
+            // insert view import
+            ignite.patchInFile(appNavFilePath, {
+                after: splashImport,
+                insert: importToAdd,
+            });
+        } else {
+            ignite.patchInFile(appNavFilePath, {
+                before: 'const routes = {',
+                insert: importToAdd,
+            });
+        }
 
         // insert view route
         ignite.patchInFile(appNavFilePath, {
@@ -55,13 +70,24 @@ module.exports = async function (context) {
             insert: routeToAdd,
         });
     } else {
-        const routeToAdd = `    Navigation.registerNewComponent('${config.appName}.${viewName}', () => provideRedux(${viewName}));`;
+        const routeToAdd = `    Navigation.registerComponent('${appName}.${viewName}', () => provideRedux(${viewName}));`;
 
-        // insert view import
-        ignite.patchInFile(appNavFilePath, {
-            after: `import Splash from '${config.appName}/app/views/Splash';`,
-            insert: importToAdd,
-        });
+        // ensure the splash import exists and fallback if it does not.
+        const file = await filesystem.read(appNavFilePath);
+        const splashImport = `import Splash from '${appName}/app/views/Splash';`;
+
+        if (file.includes(splashImport)) {
+            // insert view import
+            ignite.patchInFile(appNavFilePath, {
+                after: splashImport,
+                insert: importToAdd,
+            });
+        } else {
+            ignite.patchInFile(appNavFilePath, {
+                after: `import { Navigation } from 'react-native-navigation';`,
+                insert: importToAdd,
+            });
+        }
 
         // insert view route
         ignite.patchInFile(appNavFilePath, {
