@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component<% if (props.isPure) {%>, PureComponent<%}%> } from 'react';
 import { StyleSheet } from 'react-native';
 <% if (props.isConnected) { %>import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -14,7 +14,8 @@ const styles = StyleSheet.create({
 
 type Props = {};
 
-<% if (props.isConnected) { %>class <%= props.name %> extends Component<Props> {<% } else { %>export default class <%= props.name %> extends Component<Props> {<% } %>
+<% if (props.isConnected) { %><% if (props.isPure) { %>class <%= props.name %> extends PureComponent<Props> {<% } else { %>class <% props.name %> extends Component<Props> {<% } %><% } else { %><% if (props.isPure) { %>export default class <%= props.name %> extends PureComponent<Props> {<% } else { %>export default class <% props.name %> extends Component<Props> {<% } %><% } %>
+
     // Defaults for props
     static defaultProps = {};
 
