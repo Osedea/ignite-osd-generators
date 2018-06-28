@@ -13,8 +13,8 @@ const styles = StyleSheet.create({
 });
 
 type Props = {};
-
-<% if (props.isConnected) { %><% if (props.isPure) { %>class <%= props.name %> extends PureComponent<Props> {<% } else { %>class <% props.name %> extends Component<Props> {<% } %><% } else { %><% if (props.isPure) { %>export default class <%= props.name %> extends PureComponent<Props> {<% } else { %>export default class <% props.name %> extends Component<Props> {<% } %><% } %>
+<% var typeOfComponent = props.isPure ? 'PureComponent' : 'Component' %>
+<% if (props.isConnected) { %>class <%= props.name %> extends <%= typeOfComponent %><Props> {<% } else { %>export default class <%= props.name %> extends <%= typeOfComponent %><Props> {<% } %>
 
     // Defaults for props
     static defaultProps = {};
@@ -22,7 +22,7 @@ type Props = {};
     render() {
         return (
             <View style={styles.container}>
-                <Text><%= props.name %> Component</Text>
+                <Text><%= props.name %> <%= typeOfComponent %></Text>
             </View>
         );
     }
