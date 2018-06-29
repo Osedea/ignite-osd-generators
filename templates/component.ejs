@@ -11,11 +11,10 @@ import View from '<%= props.appName %>/app/components/base/View';
 const styles = StyleSheet.create({
     container: {},
 });
-
-type Props = {};
 <% var typeOfComponent = props.isPure ? 'PureComponent' : 'Component' %>
-<% if (props.isConnected) { %>class <%= props.name %> extends <%= typeOfComponent %><Props> {<% } else { %>export default class <%= props.name %> extends <%= typeOfComponent %><Props> {<% } %>
-
+type Props = {};
+<% var classDeclaration = props.isConnected ? 'class' : 'export default class'%>
+<%= classDeclaration %> <%= props.name %> extends <%= typeOfComponent %><Props> {
     // Defaults for props
     static defaultProps = {};
 
