@@ -1,5 +1,5 @@
-// @flow
-import React, { Component } from 'react';
+// @flow<% var typeOfComponent = props.isPure ? 'PureComponent' : 'Component' %>
+import React, { <%= typeOfComponent %> } from 'react';
 import { StyleSheet } from 'react-native';
 <% if (props.isConnected) { %>import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -13,15 +13,15 @@ const styles = StyleSheet.create({
 });
 
 type Props = {};
-
-<% if (props.isConnected) { %>class <%= props.name %> extends Component<Props> {<% } else { %>export default class <%= props.name %> extends Component<Props> {<% } %>
+<% var classDeclaration = props.isConnected ? 'class' : 'export default class'%>
+<%= classDeclaration %> <%= props.name %> extends <%= typeOfComponent %><Props> {
     // Defaults for props
     static defaultProps = {};
 
     render() {
         return (
             <View style={styles.container}>
-                <Text><%= props.name %> Component</Text>
+                <Text><%= props.name %> <%= typeOfComponent %></Text>
             </View>
         );
     }
