@@ -1,4 +1,5 @@
-// @flow<% var typeOfComponent = props.isPure ? 'PureComponent' : 'Component' %>
+// @flow
+<% var typeOfComponent = props.isPure ? 'PureComponent' : 'Component' %>
 import React, { <%= typeOfComponent %> } from 'react';
 import { StyleSheet } from 'react-native';
 <% if (props.isConnected) { %>import { connect } from 'react-redux';

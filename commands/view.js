@@ -5,7 +5,7 @@ module.exports = async function (context) {
     const { parameters, strings, print, ignite, filesystem } = context;
     const { pascalCase, isBlank } = strings;
 
-    const { navigation, appName } = await filesystem.read(`${process.cwd()}/ignite.json`, 'json');
+    const { navigation, appName } = await filesystem.read(`${process.cwd()}/ignite/ignite.json`, 'json');
 
     // validation
     if (isBlank(parameters.first)) {
