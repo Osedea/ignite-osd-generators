@@ -30,9 +30,6 @@ type Props = {};
 
 <% if (props.isConnected) { %>const mapStateToProps = createStructuredSelector({
 });
-const mapDispatchToProps = (dispatch) => bindActionCreators(
-    {},
-    dispatch
-);
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(<%= props.name %>);<% } %>
