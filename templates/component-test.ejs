@@ -1,13 +1,9 @@
-// @flow
-/* eslint-disable react/jsx-no-bind */
-/* eslint-disable no-empty-function */
-
 import 'react-native';
 import React from 'react';
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
 
-import <%= props.name %> from '../app/components/<%= props.name %>.js';
+import <%= props.name %> from '../app/components/<%= props.name %>';
 
 it('renders correctly', () => {
     const tree = renderer.create(<<%= props.name %> />);

@@ -1,35 +1,31 @@
-// @flow
+import { createSlice } from '@reduxjs/toolkit';
 
-import { fromJS } from 'immutable';
-import {
-    <%= props.name.toUpperCase() %>_FETCH_SUCCESS,
-    <%= props.name.toUpperCase() %>_FETCH_FAIL,
-    <%= props.name.toUpperCase() %>_FETCH_TRY,
-} from './actions';
-
-const initialState = fromJS({
-    list: {},
-    fetching: false,
-    errors: null,
-});
-
-function <%= props.name.toLowerCase() %>ServiceReducer(state = initialState, action) {
-    switch (action.type) {
-        case <%= props.name.toUpperCase() %>_FETCH_TRY:
-            return state.set('fetching', true)
-                .set('errors', null);
-        case <%= props.name.toUpperCase() %>_FETCH_SUCCESS:
-            return state
-                .set('list', fromJS(action.payload))
-                .set('fetching', false)
-                .set('errors', null);
-        case <%= props.name.toUpperCase() %>_FETCH_FAIL:
-            return state
-                .set('fetching', false)
-                .set('errors', action.payload);
-        default:
-            return state;
-    }
+interface <%= props.name %> {
+    // TODO
 }
 
-export default <%= props.name.toLowerCase() %>ServiceReducer;
+interface <%= props.name %>ServiceState {
+    data: <%= props.name %> | {},
+    errors: string | null,
+}
+
+const initialState: <%= props.name %>ServiceState = {
+    data: {},
+    errors: null,
+}
+
+const <%= props.name %>Service = createSlice({
+    name: '<%= props.name %>Service',
+    initialState,
+    reducers: {
+        got<%= props.name %>s: (state: <%= props.name %>ServiceState, action: ReduxAction) => {
+            state.data = action.payload;
+            state.errors = null;
+        },
+        get<%= props.name %>sFailed: (state: <%= props.name %>ServiceState, action: ReduxAction) => {
+            state.errors = action.payload;
+        }
+    }
+});
+
+export default <%= props.name %>Service;

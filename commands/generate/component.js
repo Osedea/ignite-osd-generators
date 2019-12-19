@@ -1,3 +1,4 @@
+/* eslint-disable object-shorthand */
 module.exports = {
     description: 'Generates a component, styles, and an optional test.',
     run: async function (context) {
@@ -14,7 +15,7 @@ module.exports = {
         const jobs = [
             {
                 template: 'component.ejs',
-                target: `app/components/${name}.js`,
+                target: `app/components/${name}.tsx`,
             },
             {
                 template: 'component-test.ejs',
@@ -34,35 +35,30 @@ module.exports = {
         if (typeof parameters.options.isFunctional === 'undefined') {
             const answer = await prompt.ask({
                 name: 'isFunctional',
-                type: 'radio',
+                type: 'select',
                 message: 'Will the component be functional?',
                 choices: ['No', 'Yes'],
             });
             isFunctional = answer.isFunctional === 'Yes';
             if (isFunctional) {
                 jobs[0].template = 'component-functional.ejs';
-                await ignite.copyBatch(context, jobs, {
-                    ...config,
-                    name,
-                });
-                return;
             }
         }
 
         if (typeof parameters.options.isConnected === 'undefined') {
             const answer = await prompt.ask({
                 name: 'isConnected',
-                type: 'radio',
+                type: 'select',
                 message: 'Will this component be connected to redux?',
                 choices: ['No', 'Yes'],
             });
             isConnected = answer.isConnected === 'Yes';
         }
 
-        if (typeof parameters.options.isPure === 'undefined') {
+        if (typeof parameters.options.isPure === 'undefined' && !isFunctional) {
             const answer = await prompt.ask({
                 name: 'isPure',
-                type: 'radio',
+                type: 'select',
                 message: 'Will the component be a pure component?',
                 choices: ['No', 'Yes'],
             });

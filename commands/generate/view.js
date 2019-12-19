@@ -1,3 +1,4 @@
+/* eslint-disable object-shorthand */
 module.exports = {
     description: 'Generates a redux smart component.',
     run: async function (context) {
@@ -21,15 +22,15 @@ module.exports = {
         const jobs = [
             {
                 template: 'view.ejs',
-                target: `app/views/${name}/index.js`,
+                target: `app/views/${name}/index.tsx`,
             },
         ];
 
         await ignite.copyBatch(context, jobs, props);
 
         const appNavFilePath = navigation === 'react-navigation'
-            ? `${process.cwd()}/app/routes/index.js`
-            : `${process.cwd()}/app/routes.js`;
+            ? `${process.cwd()}/app/routes/index.ts`
+            : `${process.cwd()}/app/routes.ts`;
         const viewName = name;
         const importToAdd = `import ${viewName} from '${
             appName
@@ -55,7 +56,7 @@ module.exports = {
                 });
             } else {
                 ignite.patchInFile(appNavFilePath, {
-                    before: 'const routes = {',
+                    after: "import { BottomTabBar, createBottomTabNavigator } from 'react-navigation-tabs';",
                     insert: importToAdd,
                 });
             }
@@ -91,5 +92,5 @@ module.exports = {
                 insert: routeToAdd,
             });
         }
-    }
+    },
 };

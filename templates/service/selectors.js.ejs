@@ -1,14 +1,12 @@
-// @flow
-
 import { createSelector } from 'reselect';
 
 /**
  * Direct selector to the <%= props.name %> state domain
  */
-const select<%= props.name %>State = () => (state) => state.get('<%= props.name %>');
+const select<%= props.name %> = () => (state) => state.<%= props.name %>;
 
 export const select<%= props.name %>List = () =>
-    createSelector(select<%= props.name %>State(), (substate) => substate.get('list'));
+    createSelector(select<%= props.name %>(), (substate) => substate.list);
 
 export const selectErrors = () =>
-    createSelector(select<%= props.name %>State(), (substate) => substate.get('errors'));
+    createSelector(select<%= props.name %>(), (substate) => substate.errors);

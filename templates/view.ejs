@@ -1,12 +1,8 @@
-// @flow
-
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
-import Text from '<%= props.appName %>/app/components/base/Text';
 import ViewContainer from '<%= props.appName %>/app/containers/ViewContainer';
 // import YourSelector from '<%= props.appName %>/app/services/YourService/selectors';
 // import YourThunk from '<%= props.appName %>/app/services/YourService/thunks';
@@ -16,7 +12,7 @@ const styles = StyleSheet.create({
     },
 });
 
-type Props = {};
+interface Props {};
 
 class <%= props.name %>View extends Component<Props> {
     state = {};
@@ -33,11 +29,8 @@ class <%= props.name %>View extends Component<Props> {
 const mapStateToProps = createStructuredSelector({
     // yourProp: YourSelector(),
 });
-const mapDispatchToProps = (dispatch) => bindActionCreators(
-    {
-        // YourThunk,
-    },
-    dispatch
-);
+const mapDispatchToProps = {
+    // YourThunk,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(<%= props.name %>View);

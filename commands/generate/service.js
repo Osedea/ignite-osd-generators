@@ -1,3 +1,4 @@
+/* eslint-disable object-shorthand */
 module.exports = {
     description: 'Generates a action/creator/reducer set for Redux.',
     run: async function (context) {
@@ -21,35 +22,27 @@ module.exports = {
 
         const jobs = [
             {
-                template: `service/actions.js.ejs`,
-                target: `app/services/${name}/actions.js`,
-            },
-            {
                 template: `service/reducer.js.ejs`,
-                target: `app/services/${name}/reducer.js`,
-            },
-            {
-                template: `service/requests.js.ejs`,
-                target: `app/services/${name}/requests.js`,
+                target: `app/services/${name}/reducer.ts`,
             },
             {
                 template: `service/selectors.js.ejs`,
-                target: `app/services/${name}/selectors.js`,
+                target: `app/services/${name}/selectors.ts`,
             },
             {
                 template: `service/thunks.js.ejs`,
-                target: `app/services/${name}/thunks.js`,
+                target: `app/services/${name}/thunks.ts`,
             },
         ];
 
         await ignite.copyBatch(context, jobs, props);
 
-        ignite.patchInFile(`${process.cwd()}/app/reducers.js`, {
-            after: `import { combineReducers } from 'redux-immutable';`,
+        ignite.patchInFile(`${process.cwd()}/app/reducers.ts`, {
+            after: `import { combineReducers } from 'redux';`,
             insert: `import ${name}Reducer from '${appName}/app/services/${name}/reducer';`,
         });
 
-        ignite.patchInFile(`${process.cwd()}/app/reducers.js`, {
+        ignite.patchInFile(`${process.cwd()}/app/reducers.ts`, {
             after: `export default combineReducers`,
             insert: `    ${name}: ${name}Reducer,`,
         });
