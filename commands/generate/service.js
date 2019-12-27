@@ -38,13 +38,13 @@ module.exports = {
         await ignite.copyBatch(context, jobs, props);
 
         ignite.patchInFile(`${process.cwd()}/app/reducers.ts`, {
-            after: `import { combineReducers } from 'redux';`,
+            before: `export default combineReducers`,
             insert: `import ${name}Reducer from '${appName}/app/services/${name}/reducer';`,
         });
 
         ignite.patchInFile(`${process.cwd()}/app/reducers.ts`, {
             after: `export default combineReducers`,
-            insert: `    ${name}: ${name}Reducer,`,
+            insert: `    ${name}: ${name}Reducer.reducer,`,
         });
     }
 };

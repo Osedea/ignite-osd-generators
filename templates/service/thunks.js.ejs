@@ -1,11 +1,13 @@
 import RequestHandler from '<%= props.appName %>/app/helpers/requestHandler';
-import { fetch<%= props.name %>Try, fetch<%= props.name %>Success, fetch<%= props.name %>Fail } from './actions';
+import <%= props.name %>Service from './reducer';
+
+const { actions: { got<%= props.name %>s, get<%= props.name %>sFailed } } = <%= props.name %>Service;
 
 /**
  * GET <%= props.name %>
  */
-export const get<%= props.name %> = () => (dispatch: Function) => {
-    return RequestHandler.requestAPI(`/<%= props.name.toLowerCase() %>`);
+export const get<%= props.name %> = () => (dispatch: Dispatch) => {
+    RequestHandler.requestAPI(`/<%= props.name.toLowerCase() %>`)
         .then((data) => {
             dispatch(got<%= props.name %>s(data));
         })
