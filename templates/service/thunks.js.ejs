@@ -1,17 +1,17 @@
 import RequestHandler from '<%= props.appName %>/app/helpers/requestHandler';
 import <%= props.name %>Service from './reducer';
 
-const { actions: { got<%= props.name %>s, get<%= props.name %>sFailed } } = <%= props.name %>Service;
+const { actions: { got<%= props.name %>, get<%= props.name %>Failed } } = <%= props.name %>Service;
 
 /**
  * GET <%= props.name %>
  */
 export const get<%= props.name %> = () => (dispatch: Dispatch) => {
-    RequestHandler.requestAPI(`/<%= props.name.toLowerCase() %>`)
-        .then((data) => {
-            dispatch(got<%= props.name %>s(data));
+    RequestHandler.requestAPI(`/<%= props.kebabCaseName %>`)
+        .then((data: Array<<%= props.singularName %>>) => {
+            dispatch(got<%= props.name %>(data));
         })
         .catch((response) => {
-            dispatch(get<%= props.name %>sFailed(response.message));
+            dispatch(get<%= props.name %>Failed(response.message));
         });
 };

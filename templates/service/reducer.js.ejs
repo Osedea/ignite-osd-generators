@@ -1,16 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-interface <%= props.name %> {
+interface <%= props.singularName %> {
     // TODO
 }
 
 interface <%= props.name %>ServiceState {
-    data: <%= props.name %> | {},
+    list: Array<<%= props.singularName %>>,
     errors: string | null,
 }
 
 const initialState: <%= props.name %>ServiceState = {
-    data: {},
+    list: [],
     errors: null,
 }
 
@@ -18,11 +18,11 @@ const <%= props.name %>Service = createSlice({
     name: '<%= props.name %>Service',
     initialState,
     reducers: {
-        got<%= props.name %>s: (state: <%= props.name %>ServiceState, action: ReduxAction) => {
-            state.data = action.payload;
+        got<%= props.name %>: (state: <%= props.name %>ServiceState, action: ReduxAction) => {
+            state.list = action.payload;
             state.errors = null;
         },
-        get<%= props.name %>sFailed: (state: <%= props.name %>ServiceState, action: ReduxAction) => {
+        get<%= props.name %>Failed: (state: <%= props.name %>ServiceState, action: ReduxAction) => {
             state.errors = action.payload;
         }
     }

@@ -3,13 +3,25 @@ import { createSelector } from 'reselect';
 /**
  * Direct selector to the <%= props.name %> state domain
  */
-const get<%= props.name %> = (state) => state.<%= props.name %>;
+const get<%= props.name %> = (state) => state.<%= props.lowerFirstName %>;
 
 export const select<%= props.name %>List = () =>
     createSelector(
         get<%= props.name %>,
         (substate) => substate.list
     );
+
+export const select<%= props.name %>ListById = () =>
+    createSelector(
+        get<%= props.name %>,
+        (substate) => substate.list.reduce(
+            (result: { [key: number]: <%= props.singularName %> }, item: <%= props.singularName %>) => {
+                result[item.id] = item;
+                return result;
+            }, {}
+        )
+    );
+
 
 export const selectErrors = () =>
     createSelector(

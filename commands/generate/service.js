@@ -3,20 +3,30 @@ module.exports = {
     description: 'Generates a action/creator/reducer set for Redux.',
     run: async function (context) {
         // grab some features
-        const { parameters, ignite, strings, print, filesystem } = context;
-        const { isBlank, pascalCase } = strings;
+        const { parameters, ignite, strings, print, filesystem, prompt } = context;
         const { appName } = await filesystem.read(`${process.cwd()}/ignite/ignite.json`, 'json');
 
         // validation
-        if (isBlank(parameters.first)) {
+        if (strings.isBlank(parameters.first)) {
             print.info(`${context.runtime.brand} generate service <name>\n`);
             print.info('A name is required.');
             return;
         }
 
-        const name = pascalCase(parameters.first);
+        const name = strings.pascalCase(parameters.first);
+
+        if (!strings.isPlural(name)) {
+            const result = await prompt.confirm(`You should use a Plural term, do you wish to continue?`);
+            if (!result) {
+                process.exit();
+            }
+        }
+
         const props = {
             name,
+            singularName: strings.singular(name),
+            kebabCaseName: strings.kebabCase(name),
+            lowerFirstName: strings.lowerFirst(name),
             appName,
         };
 
@@ -38,13 +48,13 @@ module.exports = {
         await ignite.copyBatch(context, jobs, props);
 
         ignite.patchInFile(`${process.cwd()}/app/reducers.ts`, {
-            before: `export default combineReducers`,
+            before: `app/services`,
             insert: `import ${name}Reducer from '${appName}/app/services/${name}/reducer';`,
         });
 
         ignite.patchInFile(`${process.cwd()}/app/reducers.ts`, {
             after: `export default combineReducers`,
-            insert: `    ${name}: ${name}Reducer.reducer,`,
+            insert: `    ${strings.lowerFirst(name)}: ${name}Reducer.reducer,`,
         });
     }
 };
